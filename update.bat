@@ -1,0 +1,9 @@
+@echo off
+echo Adding files...
+git add .
+echo Committing changes...
+git commit -m "Update tee box app"
+echo Pushing to GitHub...
+git push origin main
+echo Done! Changes are live at your GitHub Pages URL
+pause
