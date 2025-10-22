@@ -57,10 +57,16 @@ struct ContentView: View {
                     
                     HStack {
                         Text("Base Elevation:")
-                        TextField("Elevation", value: $teeBoxModel.baseElevation, format: .number)
+                        TextField("Ft", value: $teeBoxModel.baseElevationFt, format: .number)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .keyboardType(.decimalPad)
+                            .frame(width: 60)
                         Text("ft")
+                        TextField("In", value: $teeBoxModel.baseElevationIn, format: .number)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .keyboardType(.decimalPad)
+                            .frame(width: 60)
+                        Text("in")
                     }
                     
                     HStack {
@@ -69,6 +75,11 @@ struct ContentView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .keyboardType(.decimalPad)
                     }
+                    
+                    Text(teeBoxModel.slopeDisplayText)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .italic()
                 }
                 .padding()
                 .background(Color.gray.opacity(0.1))
@@ -87,6 +98,40 @@ struct ContentView: View {
                         ElevationGridView(grid: teeBoxModel.elevationGrid, gridSize: teeBoxModel.gridSize)
                     }
                     .frame(maxHeight: 400)
+                    
+                    // Delta Display
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Elevation Deltas")
+                            .font(.headline)
+                        
+                        HStack {
+                            Text("Across Width (\(teeBoxModel.width, specifier: "%.0f") ft):")
+                            Spacer()
+                            Text(teeBoxModel.deltaAcrossWidth.feetInchesString)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        HStack {
+                            Text("Across Depth (\(teeBoxModel.depth, specifier: "%.0f") ft):")
+                            Spacer()
+                            Text(teeBoxModel.deltaAcrossDepth.feetInchesString)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        if teeBoxModel.deltaDiagonal > 0 {
+                            let diagonalDistance = sqrt(teeBoxModel.width * teeBoxModel.width + teeBoxModel.depth * teeBoxModel.depth)
+                            HStack {
+                                Text("Diagonal (\(diagonalDistance, specifier: "%.1f") ft):")
+                                Spacer()
+                                Text(teeBoxModel.deltaDiagonal.feetInchesString)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.red)
+                            }
+                        }
+                    }
+                    .padding()
+                    .background(Color.blue.opacity(0.1))
+                    .cornerRadius(10)
                 }
                 
                 Spacer()
@@ -106,14 +151,11 @@ struct ElevationGridView: View {
                 HStack(spacing: 2) {
                     ForEach(0..<grid[row].count, id: \.self) { col in
                         VStack {
-                            Text(String(format: "%.1f", grid[row][col]))
+                            Text(grid[row][col].feetInchesString)
                                 .font(.caption2)
                                 .fontWeight(.semibold)
-                            Text("ft")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
                         }
-                        .frame(width: 60, height: 50)
+                        .frame(width: 70, height: 50)
                         .background(colorForElevation(grid[row][col]))
                         .cornerRadius(4)
                     }

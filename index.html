@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tee Box Slope Designer</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -73,30 +74,65 @@
             background: white;
         }
         .elevation-grid {
-            display: inline-block;
-            gap: 2px;
+            position: relative;
+            border: 2px solid #333;
+            margin: 20px auto;
+            background: #f8f9fa;
         }
-        .grid-row {
-            display: flex;
-            gap: 2px;
-            margin-bottom: 2px;
+        .survey-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
         }
-        .grid-cell {
-            width: 70px;
-            height: 50px;
-            border-radius: 4px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 10px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        .elevation-value {
+        .elevation-label {
+            position: absolute;
+            background: white;
+            padding: 2px 4px;
+            border: 1px solid #333;
+            border-radius: 3px;
             font-size: 10px;
             font-weight: bold;
-            text-align: center;
+            transform: translate(-50%, -120%);
+            z-index: 11;
+        }
+        .grid-line {
+            position: absolute;
+            background: #666;
+            z-index: 5;
+        }
+        .measuring-stick {
+            position: absolute;
+            background: #333;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .origin-marker {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: red;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+        }
+        .origin-label {
+            position: absolute;
+            background: red;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+            transform: translate(-50%, -150%);
+            z-index: 16;
         }
     </style>
 </head>
